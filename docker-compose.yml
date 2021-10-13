@@ -1,0 +1,34 @@
+services:
+  influxdb:
+    image: influxdb:latest
+    container_name: influxdb
+    ports:
+      - "8086:8086"
+    networks:
+      - bridge
+    volumes:
+      - influxdb2:/var/lib/influxdb
+    environment:
+      - DOCKER_INFLUXDB_INIT_USERNAME=sriram212
+      - DOCKER_INFLUXDB_INIT_PASSWORD=MailPass123
+      - DOCKER_INFLUXDB_INIT_ORG=test
+      - DOCKER_INFLUXDB_INIT_BUCKET=firstDB
+
+  grafana:
+    image: grafana/grafana
+    container_name: grafana
+    ports:
+      - 3000:3000
+    networks:
+      - bridge
+    volumes:
+      - grafana:/var/lib/grafana
+    depends_on: 
+      - influxdb
+    links:
+      - influxdb
+networks:
+  bridge:
+volumes:
+  influxdb2:
+  grafana:
